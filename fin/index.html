@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+
+    <script src="thirdparty/jquery-1.10.2.js"></script>
+    <script src="thirdparty/underscore-min.js"></script>
+
+    <title></title>
+
+    <script src="js/common.js"></script>
+    <script src="js/digital_view.js"></script>
+    <script src="js/clock.js"></script>
+    <script src="js/main.js"></script>
+
+</head>
+<body>
+
+    <div id="clock">
+        <div class="display">
+
+        </div>
+
+        <button class="trigger"></button>
+    </div>
+
+    <script type="text/template" id="digitalTpl">
+        <div><%-title%></div>
+        <span class="hour"></span>:<span class="minute"></span>:<span class="second"></span>
+    </script>
+
+</body>
+</html>

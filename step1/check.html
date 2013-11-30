@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+
+    <script src="thirdparty/jquery-1.10.2.js"></script>
+
+    <title></title>
+
+    <script src="js/common.js"></script>
+    <script src="js/clock.js"></script>
+
+    <script>
+        function clockCheck1() {
+
+            console.log('[info]TEST1スタート');
+
+            /*
+             * start、stopのメソッドを持つ。
+             * 一秒ごとに、自身の持つ現在時刻（now）が更新されるようにして下さい。
+             */
+
+            // CLOCK.Clockをインスタンス化します
+            var clock = new CLOCK.Clock();
+
+            // スタートします
+            clock.start();
+
+            var now;
+            setTimeout(function () {
+
+                //スタートして一秒後の値を初期値とする
+                //初期値扱い
+                now = clock.now;
+
+                console.log('[info] 一秒待ちます');
+                setTimeout(function () {
+
+                    //さらに一秒経ったら値は更新されているはず。
+                    if (now.getTime() == clock.now.getTime()) {
+                        console.log('[error] clock.now が更新されていません');
+                        return;
+                    }
+
+                    now = clock.now;
+
+                    // ストップします
+                    clock.stop();
+
+                    console.log('[info] 二秒待ちます'); //十分な時間待つ
+                    setTimeout(function () {
+
+                        //停止したので更新されていないはず。
+                        if (now.getTime() != clock.now.getTime()) {
+                            console.log('[error] clock.now が更新されてはいけません');
+                            return;
+                        }
+
+                        console.log('[info]おめでとうございます。テスト1に合格しました!!');
+
+                    }, 2000);
+
+                }, 1000);
+
+            }, 1000);
+        }
+
+        function clockCheck2(){
+
+            console.log('[info]TEST2スタート');
+
+            /**
+             * onStart、onStop、onTickのメソッドを定義しましょう（呼ばれる事が確認できれば中身は空で良いです）。
+             * それぞれ、スタートした時、ストップしたとき、現在時刻が更新されたときに呼ばれます。
+             */
+
+            var clock = new CLOCK.Clock();
+
+            //メソッドカウントチェック用
+            var startCount = 0;
+            clock.onStart = function(){
+                startCount++;
+            };
+
+            var stopCount = 0;
+            clock.onStop = function(){
+                stopCount++;
+            };
+
+            var tickCount = 0;
+            clock.onTick = function(){
+                tickCount++;
+            };
+
+
+            clock.start();
+            if(startCount != 1){
+                console.log('[error] 1回startしたらonStartが1回呼ばれないといけません');
+                return;
+            }
+
+            console.log('[info] 1.2秒待ちます');
+            // 1回は更新されるのを待つ
+            setTimeout(function(){
+
+                if(tickCount != 1){
+                    console.log('[error] 1秒たったらonTickが1回呼ばれないといけません');
+                    return;
+                }
+
+                clock.stop();
+                if(stopCount != 1){
+                    console.log('[error] 1回stopしたらonStopが1回呼ばれないといけません');
+                    return;
+                }
+
+                console.log('[info] 1.2秒待ちます');
+                setTimeout(function(){
+
+                    if(tickCount != 1){
+                        console.log('[error] stopしたらonTickが呼ばれてはいけません');
+                        return;
+                    }
+
+                    console.log('[info]おめでとうございます。テスト2に合格しました!!');
+
+                }, 1200);
+
+            }, 1200)
+
+
+        }
+    </script>
+
+</head>
+<body>
+<button onclick="clockCheck1()">仕様1のチェック</button>
+<button onclick="clockCheck2()">仕様2のチェック</button>
+
+
+</body>
+</html>
